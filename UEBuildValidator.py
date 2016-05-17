@@ -7,6 +7,7 @@ from glob import glob
 import json
 import re
 
+#######  DATA CLASSES + DATA GATHERING
 
 class Module():
     def __init__(self, name, fileName):
@@ -118,7 +119,6 @@ class GamePlugin(Binary):
         return self.EngineDir + '\\' + self.GameName + '\Plugins\\' + self.Name + '\Binaries\Win64\UE4Editor.modules'
 
 
-
             
 class EngineApp(App):
     def __init__(self, name, engineDir):
@@ -146,3 +146,18 @@ class GameApp(App):
 
     def AddPlugin(self, modulePath, additionalPath, pluginName):
         self.Plugins.append(GamePlugin(pluginName, self.EngineDir, self.Name))
+
+
+#######  DATA ANALYSIS
+
+
+def Validate_App_BuildId(app):
+    print 'Validating BuildId\'s in: ' + app.Name
+    print 'BuildId: ' + app.BuildId
+    score = 0
+    for plugin in app.Plugins:
+        if plugin.BuildId != app.BuildId:
+            score = score + 1
+            print '  Mismatch plugin: ' + plugin.BuildId + ' ' + plugin.Name
+    print 'Errors found: ' + str(score)
+        

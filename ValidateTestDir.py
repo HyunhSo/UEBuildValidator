@@ -14,6 +14,9 @@ frontend = bv.EngineApp("UnrealFrontend", enginedir)
 print '\n########\n'
 game = bv.GameApp("ExampleGame", enginedir)
 
-
-
-
+print '\n########\n'
+bv.Validate_App_BuildId(engine)
+print '\n########\n'
+bv.Validate_App_BuildId(frontend)
+print '\n########\n'
+bv.Validate_App_BuildId(game)
