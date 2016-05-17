@@ -1,0 +1,8 @@
+{
+	"Changelist" : 0,
+	"BuildId" : "e193042a-9e6d-4071-b1a3-e983c94e4789",
+	"Modules" : 
+	{
+		"UdpMessaging" : "UE4Editor-UdpMessaging.dll"
+	}
+}

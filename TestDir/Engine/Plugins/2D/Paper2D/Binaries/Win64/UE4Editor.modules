@@ -1,0 +1,12 @@
+{
+	"Changelist" : 0,
+	"BuildId" : "1778c2cc-b440-4480-8615-00ca57f0e4d6",
+	"Modules" : 
+	{
+		"Paper2D" : "UE4Editor-Paper2D.dll",
+		"Paper2DEditor" : "UE4Editor-Paper2DEditor.dll",
+		"PaperSpriteSheetImporter" : "UE4Editor-PaperSpriteSheetImporter.dll",
+		"PaperTiledImporter" : "UE4Editor-PaperTiledImporter.dll",
+		"SmartSnapping" : "UE4Editor-SmartSnapping.dll"
+	}
+}

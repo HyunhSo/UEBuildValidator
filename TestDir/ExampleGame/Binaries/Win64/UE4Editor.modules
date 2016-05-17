@@ -1,0 +1,9 @@
+{
+	"Changelist" : 0,
+	"BuildId" : "e193042a-9e6d-4071-b1a3-e983c94e4789",
+	"Modules" : 
+	{
+		"ExampleGame" : "UE4Editor-ExampleGame.dll",
+		"ExampleEditor" : "UE4Editor-ExampleEditor.dll"
+	}
+}
