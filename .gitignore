@@ -1,2 +1,3 @@
 *.pyc
 Validate*.py
+!ValidateTestDir.py
