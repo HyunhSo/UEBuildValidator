@@ -1,0 +1,8 @@
+{
+	"Changelist" : 2946394,
+	"BuildId" : "ececb0b5-73c1-4225-ba9c-2ecb581bbd1c",
+	"Modules" : 
+	{
+		"RegexPlugin" : "UE4Editor-RegexPlugin.dll"
+	}
+}

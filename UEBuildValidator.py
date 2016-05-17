@@ -52,9 +52,10 @@ class Binary():
         return 'override this'
 
 class App(Binary):
-    def __init__(self, name, engineDir):
+    def __init__(self, name, engineDir, pluginsUseEditorAppName=False):
         Binary.__init__(self, name, engineDir)
-
+        self.PluginsUseEditorAppName = pluginsUseEditorAppName
+        
         # Application can have plugins
         self.Plugins = []
         self.DiscoverPlugins()
@@ -73,14 +74,19 @@ class App(Binary):
         # find all module files in plugin directory
         modulePaths = [y for x in os.walk(path) for y in glob(os.path.join(x[0], '*.modules'))]
         # cut plugin names from module file paths
-        pluginNamePattern = re.compile("Plugins(.*)\\\\([a-zA-Z]+)\\\\Binaries\\\\Win64\\\\UE4Editor\.modules")
+        appName = ''
+        if self.PluginsUseEditorAppName:
+            appName = 'UE4Editor'
+        else:
+            appName = self.Name
+        pluginNamePattern = re.compile("Plugins(.*)\\\\([a-zA-Z]+)\\\\Binaries\\\\Win64\\\\" + appName + "\.modules")
         pluginList = []
         for modulePath in modulePaths:
             match = pluginNamePattern.search(modulePath)
             if match:
                 additionalPath = match.group(1)
                 pluginName = match.group(2)
-                if len(pluginName) > 1 and len(additionalPath) > 1:
+                if len(pluginName) > 1:
                     pluginList.append([modulePath, additionalPath, pluginName])
         # remove plugins that are disabled for an app
         for p in pluginList:
@@ -90,15 +96,18 @@ class App(Binary):
         # add plugins
         for p in pluginList:
             self.AddPlugin(p[0], p[1], p[2])
+
+
         
         
 class EnginePlugin(Binary):
-    def __init__(self, name, engineDir, additionalPath):
+    def __init__(self, name, engineDir, additionalPath, appName):
         self.AdditionalPath = additionalPath
+        self.AppName = appName
         Binary.__init__(self, name, engineDir)
         
     def GetModulesFilePath(self):
-        return self.EngineDir + '\Engine\Plugins' + self.AdditionalPath + '\\' + self.Name + '\Binaries\Win64\UE4Editor.modules'
+        return self.EngineDir + '\Engine\Plugins' + self.AdditionalPath + '\\' + self.Name + '\Binaries\Win64\\' + self.AppName + '.modules'
 
 class GamePlugin(Binary):
     def __init__(self, name, engineDir, gameName):
@@ -107,27 +116,33 @@ class GamePlugin(Binary):
         
     def GetModulesFilePath(self):
         return self.EngineDir + '\\' + self.GameName + '\Plugins\\' + self.Name + '\Binaries\Win64\UE4Editor.modules'
+
+
+
             
-class EditorApp(App):
-    def __init__(self, engineDir):
-        App.__init__(self, "UE4Editor", engineDir)
+class EngineApp(App):
+    def __init__(self, name, engineDir):
+        App.__init__(self, name, engineDir)
 
     def GetModulesFilePath(self):
-        return self.EngineDir + '\Engine\Binaries\Win64\UE4Editor.modules'
+        return self.EngineDir + '\Engine\Binaries\Win64\\' + self.Name + '.modules'
 
     def GetPluginsDir(self):
         return self.EngineDir + '\Engine\Plugins\\'
 
     def AddPlugin(self, modulePath, additionalPath, pluginName):
-        self.Plugins.append(EnginePlugin(pluginName, self.EngineDir, additionalPath))
+        self.Plugins.append(EnginePlugin(pluginName, self.EngineDir, additionalPath, self.Name))
     
     
 class GameApp(App):
     def __init__(self, name, engineDir):
-        App.__init__(self, name, engineDir)
+        App.__init__(self, name, engineDir, True)
 
     def GetModulesFilePath(self):
         return self.EngineDir + '\\' + self.Name + '\Binaries\Win64\UE4Editor.modules'
         
+    def GetPluginsDir(self):
+        return self.EngineDir + '\\' + self.Name + '\Plugins\\'
 
-
+    def AddPlugin(self, modulePath, additionalPath, pluginName):
+        self.Plugins.append(GamePlugin(pluginName, self.EngineDir, self.Name))

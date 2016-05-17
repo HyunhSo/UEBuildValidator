@@ -6,7 +6,12 @@ import UEBuildValidator as bv
 import os
 
 enginedir = os.getcwd() + '\TestDir'
-engine = bv.EditorApp(enginedir)
+
+print '\n########\n'
+engine = bv.EngineApp("UE4Editor", enginedir)
+print '\n########\n'
+frontend = bv.EngineApp("UnrealFrontend", enginedir)
+print '\n########\n'
 game = bv.GameApp("ExampleGame", enginedir)
 
 
